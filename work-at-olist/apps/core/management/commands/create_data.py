@@ -45,17 +45,6 @@ class Command(BaseCommand):
 
 
 
-'''
-def list_nodes():
-    nodes =  Category.objects.all()
-    for node in nodes:
-        print(' ')
-        pname = 'None' if not node.parent else node.parent.name
-        print(node.name, 'Parent: ', pname )
-        print('=============')
-        for s in node.subcategories():
-            print(s.name)
-'''
 
 
 
