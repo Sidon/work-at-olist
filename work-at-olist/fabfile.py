@@ -1,28 +1,33 @@
 '''
-Script Fabric para integração continua em projetos python, com fabric.
-Para utilizar instale o fabric (python2) ou fabric3 (python 3): 
-    pip install fabric3
+Script Fabric for contiuous integration (library and command-line tool for 
+streamlining the use of SSH for application deployment or systems administration tasks. 
+fabric (python2) ou fabric3 (python 3): 
+pip install fabric3
 '''
+
 import os
+from termcolor import colored
 import yaml
 from fabric.api import run, put, env, cd, prefix, sudo, execute
 from fabric.contrib.project import rsync_project
 from paramiko import SSHConfig
 from os.path import expanduser
 from fabric.utils import abort
+import pprint
+pp = pprint.PrettyPrinter(indent=2)
 
 
 env.use_ssh_config = True
 
 
-# local - roda um comando de shell na máquina local
-# run - roda um comando de shell no servidor remoto
-# put - faz uma cópia via ssh (scp) para servidor remoto
-# env - configurações do ambiente
+# local - run a shell command on the local machine
+# run - run a sehll command on the remote server
+# put - copy to remote server via ssh (scp)
+# env - environment conf.
 
 __author__ = "Sidon Duarte, Yan Duarte"
-__copyright__ = "Copyright 2017, Autopart Project"
-__credits__ = ["Sidon Duarte]
+__copyright__ = "Copyright 2017, olist project"
+__credits__ = ["Sidon Duarte"]
 __license__ = "GPL"
 __version__ = "1.0.0"
 __maintainer__ = "Sidon Duarte"
@@ -30,11 +35,11 @@ __email__ = "sidoncd@gmail.com"
 __status__ = "Production"
 
 
-# Lê arquivos de configuração
+# read config yaml file
 with open('fab.yaml', 'r') as f:
     cfg  = yaml.load(f)
 
-# Carrega o arquivo de configuração do .ssh do usuário corrente
+# Load .ssh configuration from current local user
 ssh_config = SSHConfig()
 file_ssh = os.path.expanduser("~/.ssh/config")
 if os.path.exists(file_ssh):
@@ -50,7 +55,7 @@ cfg['servers']['local']['path_apps'] = cfg['servers']['local']['repo_project']+c
 cfg['servers']['local']['backup_dir'] = cfg['servers']['local']['repo_project']+'/backup'
 
 
-# Carrega o config de .ssh para o cfg
+# save ssh config to cfbg dict
 for server in cfg['servers']:
     host = ssh_config.lookup(server)
     cfg['servers'][server]['user'] = host['user']
@@ -59,15 +64,14 @@ for server in cfg['servers']:
     cfg['servers'][server]['source'] = server+':'+cfg['servers'][server]['repo_project']
     cfg['servers'][server]['target'] = server+':'+cfg['servers'][server]['root']
 
-# Cria um ambiente conda
+
 def _create_conda_env():
-    """Cria um ambiente conda"""
+    """Create a conda env"""
     run('conda create -y -n %s' % cfg['conda_env'])
 
 
 
 def _setup(_server):
-
     env.host_string = _server
     env.user = cfg['servers'][_server]['user']
     env.home = cfg['servers'][_server]['home']
@@ -75,7 +79,7 @@ def _setup(_server):
 
 
 def migrate(server, app='core', info=None):
-    """Faz migrate (linha de comando)"""
+    """ Make django migrations"""
     _setup(server)
 
     migrate_file = cfg['servers'][server]['dir_apps']+app+'/'+cfg['migrate_file']
@@ -89,14 +93,14 @@ def migrate(server, app='core', info=None):
         __info(info, server)
         return
 
-    # Copia o models atual para models.py_old
+    # copy current models.py to models.py_old
     run ('cp %s %s' % (migrate_file,  old_file) )
 
-    # Copia o models.py do local para o remoto
+    # Copy models.py from local to remote
     put (local_file, migrate_file)
 
 
-    # Aplica migrate
+    # Migrate apply
     with cd(cfg['servers'][server]['repo_project']):
         with prefix(cfg['servers'][server]['env_activate']):
             run ('./manage.py makemigrations %s' % app)
@@ -104,7 +108,7 @@ def migrate(server, app='core', info=None):
 
 
 def update_reqs(server):
-    """Atualiza os requerimentos e aplica o collectstatic"""
+    """Update requirements and collectstatic"""
 
     _setup(server)
     with cd(cfg['servers'][server]['repo_project']):
@@ -114,7 +118,7 @@ def update_reqs(server):
 
 
 def rsync(_src, _target, _info=None):
-
+    '''Synchronize server via rsync'''
     _src = __chkserver(_src)
     _target = __chkserver(_target)
 
@@ -161,10 +165,9 @@ def rsync(_src, _target, _info=None):
 
 def __rsync(src, target):
 
-
-    print ('src===========>', src)
-    print ('target ========>', target)
-    print ('current_server ========>', cfg['current_server'])
+    print ('src==>', src)
+    print ('target ==>', target)
+    print ('current_server ==>', cfg['current_server'])
 
 
     if cfg['current_server']=='producao':
@@ -183,7 +186,7 @@ def __rsync(src, target):
 
 
 def rsdeploy(server, comment=None, migrate='n', app='core', info=None):
-    """Faz o deploy completo através de rsync"""
+    """ Complete deploy via rsync"""
 
     _target = __chkserver(server)
     if _target not in ['producao', 'staging']:
@@ -201,7 +204,7 @@ def rsdeploy(server, comment=None, migrate='n', app='core', info=None):
         return
 
 
-    # Sincroniza o staging com o producao, se o deploy estiver sendo p/ staging
+    # Synchronize staging with production if current deploy is to staging
     if server=='staging':
         try:
             rsync('producao', 'staging')
@@ -210,31 +213,31 @@ def rsdeploy(server, comment=None, migrate='n', app='core', info=None):
         dbprod2staging()
 
 
-    # Verifica a necessidade de migrate
+    # Make migrate
     if migrate=='s':
         migrate(server)
 
 
-    # Sincroniza o codigo (local -> target)
+    #  Synchronize the code (local -> target)
     try:
         rsync(_src, _target)
     except:
         abort ("Erro rsync (final)")
 
 
-    # Atualiza requerimentos
+    # Update requirements
     update_reqs(server)
 
-    # Restarta o servidor
+    # Restart server
     _restart_remote(server)
 
-    # Atualiza o repositorio
+    # Update CVS
     if comment is not None:
         gitpush(comment)
 
 
 def _restart_remote(server=None):
-    """Restarta o servidor remoto (linha de comando)"""
+    """Restart remote server via CLI"""
     _setup(server)
     with cd( cfg['servers'][server]['home']):
         sudo ('systemctl restart gunicorn')
@@ -242,7 +245,7 @@ def _restart_remote(server=None):
 
 
 def gitpush(comment, option='u'):
-    """Atualiza o respositorio git"""
+    """Update repo git"""
     _setup('local')
 
     with cd(cfg['servers']['local']['repo_project'] ):
@@ -253,12 +256,14 @@ def gitpush(comment, option='u'):
 
 
 def dbprod2staging():
+    '''Synchronize database (Production -> Staging)'''
     _setup('staging')
     execute(dumpdb, cfg['servers']['staging']['db_name'], 'producao', server='staging')
     #execute(__recreate, cfg['servers']['staging']['db_name'], 'staging')
 
 
 def dbprod2local():
+    '''Synchronize database (Production -> local) '''
     _setup('staging')
     execute(dumpdb, cfg['servers']['local']['db_name'], 'producao', server='local')
     #execute(__recreate, cfg['servers']['staging']['db_name'], 'staging')
@@ -266,16 +271,17 @@ def dbprod2local():
 
 # Sincroniza o banco local com o staging
 def dbstaging2local():
+    '''Synchronize database (Staging -> Local'''
     _setup('local')
     execute(dumpdb, cfg['servers']['local']['db_name'], 'staging')
-
-
 
 def __dump_name(dbname, host):
     return dbname+"_"+host+'.sql'
 
 
 def dumpdb(dbname, host, server='local'):
+    '''Create dump file from database on host and recreate on server'''
+
     _setup(server)
     dump_name = __dump_name(dbname, host)
     cfg['dump'] = cfg['servers'][server]['backup_dir']+'/'+dump_name
@@ -309,9 +315,11 @@ def __info(lst_info):
 
 
 def info(_server='local'):
-    """Informações sobre as variáveis utilizadas"""
+    """info of vars"""
 
-    print (cfg)
+    for server in cfg['servers'].keys():
+        print(server, 'green')
+        pp.pprint (cfg['servers'][server])
 
     ''' 
     _setup(_server)
