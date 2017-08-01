@@ -7,3 +7,7 @@
 *.log
 .env
 tmp
+.FCONFIG
+.MASTERKEY
+.config*
+*.csv
