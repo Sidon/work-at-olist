@@ -1,7 +1,5 @@
-#Core Django imports
 from django.test import TestCase
 from apps.core.models import Channel, Category
-#Third-party app imports
 from .factories import ChannelFactory, CategoryFactory
 
 
@@ -16,8 +14,6 @@ tree=(('Books','Books'), ('National Literature', 'Books'), ('Science fiction', '
        ('Playstation 4', 'Games'),('Computing','Computing'),('Notebooks','Computing'),('Tablets', 'Computing'),
        ('Desktop', 'Computing'))
 '''
-
-
 
 
 class ChannelTestCase(TestCase):

@@ -3,10 +3,6 @@ python:
 - 3.5
 - 3.6
 
-libraries:
-    - name: pycrypto
-        version: "2.6"
-
 services: postgresql
 dist: trusty
 

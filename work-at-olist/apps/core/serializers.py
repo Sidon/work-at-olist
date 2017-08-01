@@ -15,7 +15,9 @@ class ChannelSerializer(serializers.ModelSerializer):
 
     def get_links(self, obj):
         request = self.context['request']
-        request = {'self': reverse('channel-detail', kwargs={'uuid': obj.uuid}, request=request)}
+        links = {'self': reverse('channel-detail', kwargs={Channel.name: obj.name}, request=request)}
+
+        print (links)
 
         if bool(request.POST):
             pass
@@ -51,5 +53,6 @@ class CategorySerializer(serializers.ModelSerializer):
             pass
 
         return links
+
 
 
