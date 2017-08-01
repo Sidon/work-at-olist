@@ -1,19 +1,20 @@
 import os
+from workatolist.config.conf import Config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
+CONFIG_DIR = os.path.join(PROJECT_DIR,'config')
 
+# load encrypted configurations file
+config = Config( os.path.join(CONFIG_DIR, os.environ['FCONFIG'] ))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
+SECRET_KEY = config.get_config('secretk')
+DEBUG = config.get_config('debug')=='on'
+ALLOWED_HOSTS = config.get_config('ahosts').split(',')
+DATABASES = config.get_config('db')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ld7s4bcrf)mso_*y^mnnfrr=fh&)4gs$*e%-acjxw5nyulpioz'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+print ('====================================>', SECRET_KEY)
 
 
 # Application definition
