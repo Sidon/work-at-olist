@@ -21,6 +21,7 @@ before_script:
 script:
 - python work-at-olist/manage.py migrate --noinput
 deploy:
+    provider: heroku  
   api_key:
     secure: erchgsfJ7PY98Phi1djH+Tx7QBXSq0Yq1qXsuzinymPr4TRcdL/L1RERE1Af97ISgGQIPyCWEm0jfX6sUtghDXfuxJi4KoPml5xJMbfZvy2tc2FobfM6BsSML1lXdvpQz+OZMn75MgjPfrKCYUY4Ju/S+aUnksAqX1TjTv4GkSSNpz9Tuo/pEATyqoY0YlWm7OCAfDkEO8sdBcvDIyV0XQ4uHE9ZDhZPcJns3sBOMTCr050WtLCVtcWNvSZfa9QvacHsqtZzlNkQlDYlXNM4ao03LRS/Eud/RcrIRq2zTfTlN6EChqu+ZgVpXdLMtti+Qvyi5gm/18Nz+lgchFk4i/kD54BuGlhf5+o5yxYfRuzP0iwwojbW0qecBUYb/MMK2DrMKelP6mpL1Mo4IztUKnNHvcdowZVEYLiTw/lMiXtH/dR2ukEZe8Fi9BOn1A8cHzDVUfAGsKY65jpldoEYf6qisdYR0t/mhXE+uRzySHWZuYcm/V1i9m5G3z6QBliALDooeSabnxQFOn+oWUaBDcew1T8zlT5GbBF+RVw3ZsI89uzenSmOFNStEZ9DQOkrsPswX2vS5Sr6PpXAfXH6bRmQQZd1LoXOdMJgqTr9Qg3eD4BXLNjGID0t9YjPCD50Dfz+Dg6tyw4nXd9h2FYQeOlfs+I/PGCKIQyLTIMR6LY=
   app: work-at-olist-sdn
