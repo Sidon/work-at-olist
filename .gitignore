@@ -11,3 +11,6 @@ tmp
 .MASTERKEY
 .config*
 *.csv
+..travis.yml.kate-swp
+.config-local.json
+.config-heroku.yaml
