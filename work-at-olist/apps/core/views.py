@@ -31,7 +31,11 @@ class DefaultsMixin(object):
     )
 
 
+
 class ChannelsViewSet(DefaultsMixin, LoggingMixin, viewsets.ModelViewSet):
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'uuid'
+
     serializer_class = ChannelSerializer
     search_fields = ('name', )
     # ordering_fields = ()
@@ -49,5 +53,3 @@ class ChannelsViewSet(DefaultsMixin, LoggingMixin, viewsets.ModelViewSet):
             queryset.filter(name=name)
 
         return queryset
-
-

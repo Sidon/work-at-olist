@@ -5,9 +5,34 @@ from .models import Channel, Category
 from rest_framework_tracking.models import APIRequestLog
 
 
+
+
+class ChannelSerializer(serializers.HyperlinkedModelSerializer):
+    links = serializers.SerializerMethodField()
+    class Meta:
+        model = Channel
+        fields = ('uuid', 'name', 'links' )
+
+        extra_kwargs = {
+            'url': {'view_name': 'channel-detail', 'lookup_field': 'uuid'}
+
+        }
+
+    def get_links(self, obj):
+        request = self.context['request']
+        links = {'self': reverse('channel-detail', kwargs={'uuid': obj.uuid}, request=request)}
+
+        print(links)
+
+        if bool(request.POST):
+            pass
+
+        return links
+
+'''
+
 class ChannelSerializer(serializers.ModelSerializer):
     links = serializers.SerializerMethodField()
-    data_face = {}
 
     class Meta:
         model = Channel
@@ -15,16 +40,15 @@ class ChannelSerializer(serializers.ModelSerializer):
 
     def get_links(self, obj):
         request = self.context['request']
-        links = {'self': reverse('channel-detail', kwargs={Channel.name: obj.name}, request=request)}
 
-        print (links)
+        links = {'self': reverse('channel-detail', kwargs={'Channel.uuid': obj.uuid}, request=request)}
 
         if bool(request.POST):
             pass
 
         return links
 
-
+'''
 
 # Testing: https://stackoverflow.com/a/35994826/2879341
 class CategorySerializer(serializers.ModelSerializer):
