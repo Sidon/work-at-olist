@@ -20,5 +20,4 @@ six==1.10.0
 urllib3==1.22
 whitenoise==3.3.0
 pycrypto==2.6.1
-
-
+httpie

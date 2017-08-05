@@ -1,9 +1,21 @@
 from django.core.exceptions import ValidationError
+
+# DRF
 from rest_framework import authentication, permissions, viewsets, filters
-from rest_framework_tracking.mixins import LoggingMixin
-from rest_framework_tracking.models import APIRequestLog
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
+from rest_framework.response import Response
+from rest_framework.decorators import detail_route
 from .models import Channel, Category
 from .serializers import ChannelSerializer, CategorySerializer
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'users': reverse('user-list', request=request, format=format),
+        'snippets': reverse('snippet-list', request=request, format=format)
+    })
 
 
 class DefaultsMixin(object):
@@ -18,9 +30,6 @@ class DefaultsMixin(object):
          permissions.IsAuthenticated,
     )
 
-    # authentication_classes = ()
-    # permission_classes = ()
-
     paginate_by = 25
     paginate_by_param = 'page_size'
     max_paginate_by = 100
@@ -31,25 +40,22 @@ class DefaultsMixin(object):
     )
 
 
-
-class ChannelsViewSet(DefaultsMixin, LoggingMixin, viewsets.ModelViewSet):
-    lookup_field = 'uuid'
-    lookup_url_kwarg = 'uuid'
-
+class ChannelsViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    lookup_field = 'name'
+    lookup_url_kwarg = 'name'
+    queryset = Channel.objects.all()
     serializer_class = ChannelSerializer
     search_fields = ('name', )
-    # ordering_fields = ()
-    queryset = Channel.objects.all()
 
 
-    def get_queryset(self):
-        queryset = Channel.objects.all()
-        uuid = self.request.query_params.get('uuid', None)
-        name = self.request.query_params.get('name', None)
+class CategoryViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
-        if uuid is not None:
-            return queryset.filter(uuid=uuid)
-        elif name is not None:
-            queryset.filter(name=name)
+    queryset = Category.objects.all()
+    lookup_field = 'uuid'
+    lookup_url_kwarg = 'uuid'
+    serializer_class = CategorySerializer
+    search_fields = ('name', )
 
-        return queryset
+
+
+

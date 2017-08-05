@@ -24,8 +24,6 @@ tree2=(('Books','Books'),('National Literature', 'Books'),('Didatic','Books'),('
 
 chns = {'Shop1': tree1, 'Shop2': tree2}
 
-print ('aqui')
-
 
 class Command(BaseCommand):
     help = 'Create initial data'

@@ -10,7 +10,7 @@ class Channel(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -27,7 +27,7 @@ class Category(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
 
     name = models.CharField(max_length=100)
-    channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
+    channel = models.ForeignKey(Channel, related_name='categories', on_delete=models.CASCADE)
     parent = models.ForeignKey('self', null=True, related_name='children', related_query_name='child')
 
     def __str__(self):
@@ -35,5 +35,3 @@ class Category(models.Model):
 
     def subcategories(self):
         return self.children.all()
-
-

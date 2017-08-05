@@ -1,82 +1,22 @@
-
 from rest_framework import serializers
-from rest_framework.reverse import reverse
 from .models import Channel, Category
-from rest_framework_tracking.models import APIRequestLog
-
-
+from rest_framework.reverse import reverse
 
 
 class ChannelSerializer(serializers.HyperlinkedModelSerializer):
-    links = serializers.SerializerMethodField()
+    categories = serializers.HyperlinkedRelatedField(many=True, view_name='category-detail', read_only=True, lookup_field='uuid')
+    url = serializers.HyperlinkedIdentityField(view_name='channel-detail', lookup_field='name')
     class Meta:
         model = Channel
-        fields = ('uuid', 'name', 'links' )
+        fields = ('uuid', 'name', 'categories', 'url')
 
-        extra_kwargs = {
-            'url': {'view_name': 'channel-detail', 'lookup_field': 'uuid'}
 
-        }
+class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='category-detail', lookup_field='uuid')
+    channel = serializers.HyperlinkedRelatedField(view_name='channel-detail', lookup_field='name', queryset=Channel.objects.all() )
+    parent = serializers.HyperlinkedRelatedField(view_name='category-detail', lookup_field='uuid', queryset=Category.objects.all() )
 
-    def get_links(self, obj):
-        request = self.context['request']
-        links = {'self': reverse('channel-detail', kwargs={'uuid': obj.uuid}, request=request)}
-
-        print(links)
-
-        if bool(request.POST):
-            pass
-
-        return links
-
-'''
-
-class ChannelSerializer(serializers.ModelSerializer):
-    links = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Channel
-        fields = ('uuid', 'name', 'links')
-
-    def get_links(self, obj):
-        request = self.context['request']
-
-        links = {'self': reverse('channel-detail', kwargs={'Channel.uuid': obj.uuid}, request=request)}
-
-        if bool(request.POST):
-            pass
-
-        return links
-
-'''
-
-# Testing: https://stackoverflow.com/a/35994826/2879341
-class CategorySerializer(serializers.ModelSerializer):
-
-    subcategories = serializers.SerializerMethodField(read_only=True, method_name="get_child_categories")
-    links = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = ('name', 'uuid', 'subcategories', 'links')
-
-    def get_child_categories(self, obj):
-        """ self referral field """
-        serializer = CategorySerializer(
-            instance=obj.subcategories_set.all(),
-            many=True
-        )
-        return serializer.data
-
-
-    def get_links(self, obj):
-        request = self.context['request']
-        request = {'self': reverse('channel-detail', kwargs={'uuid': obj.uuid}, request=request)}
-
-        if bool(request.POST):
-            pass
-
-        return links
-
-
-
+        fields = ('uuid', 'channel', 'name', 'parent', 'url' )
