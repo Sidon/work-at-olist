@@ -7,15 +7,7 @@ from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 from .models import Channel, Category
-from .serializers import ChannelSerializer, CategorySerializer
-
-
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'users': reverse('user-list', request=request, format=format),
-        'snippets': reverse('snippet-list', request=request, format=format)
-    })
+from .serializers import ObjChannelSerializer, ObjCategorySerializer, UrlChannelSerializer, UrlCategorySerializer
 
 
 class DefaultsMixin(object):
@@ -40,20 +32,34 @@ class DefaultsMixin(object):
     )
 
 
-class ChannelsViewSet(DefaultsMixin, viewsets.ModelViewSet):
-    lookup_field = 'name'
-    lookup_url_kwarg = 'name'
+
+class ObjChannelViewSet(DefaultsMixin, viewsets.ModelViewSet):
     queryset = Channel.objects.all()
-    serializer_class = ChannelSerializer
+    serializer_class = ObjChannelSerializer
     search_fields = ('name', )
 
 
-class CategoryViewSet(DefaultsMixin, viewsets.ModelViewSet):
+class ObjCategoryViewSet(DefaultsMixin, viewsets.ModelViewSet):
+
+    queryset = Category.objects.all()
+    serializer_class = ObjCategorySerializer
+    search_fields = ('name', )
+
+
+class UrlChannelViewSet(DefaultsMixin, viewsets.ModelViewSet):
+    lookup_field = 'name'
+    lookup_url_kwarg = 'name'
+    queryset = Channel.objects.all()
+    serializer_class = UrlChannelSerializer
+    search_fields = ('name', )
+
+
+class UrlCategoryViewSet(DefaultsMixin, viewsets.ModelViewSet):
 
     queryset = Category.objects.all()
     lookup_field = 'uuid'
     lookup_url_kwarg = 'uuid'
-    serializer_class = CategorySerializer
+    serializer_class = UrlCategorySerializer
     search_fields = ('name', )
 
 
