@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     'rest_framework_tracking',
     'rest_framework.authtoken',
     'apps.core',
-    'apps.objs',
 ]
 
 MIDDLEWARE_CLASSES = [
