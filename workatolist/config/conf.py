@@ -18,7 +18,8 @@ class Config(object):
         decrypt_conf = self.__decryption.decrypt(crypt_conf).decode()
         lst_conf = decrypt_conf.split('\n')
         lst_conf = [s.strip() for s in lst_conf]
-        self.__config = json.loads(' '.join(lst_conf))
+        lst_conf =  ' '.join(lst_conf)
+        self.__config = json.loads(lst_conf)
 
     # Get the configuration from python dictionary (__config)
     def get_config(self,setting):
