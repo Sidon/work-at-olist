@@ -20,4 +20,5 @@ urllib3==1.22
 whitenoise==3.3.0
 httpie
 pycrypto==2.6.1  
+django-mptt==0.8.7
 
