@@ -47,7 +47,7 @@ class Command(BaseCommand):
         # Save nodes on database
         while nodes:
             for node in nodes:
-                parent = None if not Category.objects.filter(name=node[1]).exists() else \
+                parent = None if not Category.objects.filter(name=node[1], channel=channel).exists() else \
                     Category.objects.filter(name=node[1])[0]
                 if parent:
                     Category.objects.create(channel=channel, name=node[0], parent=parent)

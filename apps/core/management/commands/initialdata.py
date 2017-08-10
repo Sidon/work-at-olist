@@ -37,7 +37,7 @@ class Command(BaseCommand):
             channel = Channel.objects.create(name=chn)
             for node in chns[chn]:
                 parent_name = node[1] if node[0]!=node[1] else None
-                parent = Category.objects.filter(name=parent_name)[0] if parent_name else None
+                parent = Category.objects.filter(name=parent_name, channel=channel)[0] if parent_name else None
                 category = Category.objects.create(name=node[0], channel=channel)
                 if parent:
                     category.parent=parent
