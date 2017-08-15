@@ -11,6 +11,7 @@ class ConfigTestCase(TestCase):
     apps = ["django_extensions"]
     db = {"default": { "ENGINE": "django.db.backends.postgresql_psycopg2", "NAME": "dbtest", "USER": "dbtest",
                        "PASSWORD": "password_99", "HOST": "localhost", "PORT": "5432" }}
+
     def test_vars(self):
         secret_key = self.config.get_config('secretk')
         self.assertEqual(self.secretkey, secret_key)

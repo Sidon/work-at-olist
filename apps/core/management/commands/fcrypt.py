@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
         # make sure file path resolves
         if not os.path.isfile(file_input):
-            raise CommandError("File path does not exist on project's root.")
+            raise CommandError("File path does not exist on project'templates root.")
 
         # Create a encryptation suite
         encryption_suite = AES.new(os.environ['MASTERKEY'], AES.MODE_CBC,'This is an IV456')

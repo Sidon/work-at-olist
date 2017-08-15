@@ -1,8 +1,8 @@
+from . import views
 from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Channel, Category
 from rest_framework.reverse import reverse
-
 
 
 # http://www.django-rest-framework.org/api-guide/relations/#custom-relational-fields
@@ -24,7 +24,7 @@ class RecursiveField(serializers.BaseSerializer):
             instance = Model.objects.get(pk=data)
         except ObjectDoesNotExist:
             raise serializers.ValidationError(
-                "Objeto {0} não encontrado".format(
+                "Object {0} not found".format(
                     Model().__class__.__name__
                 )
             )
@@ -36,51 +36,60 @@ class ObjCategorySerializer(serializers.ModelSerializer):
     subcategories = RecursiveField(source="children", many=True)
     parent = serializers.SerializerMethodField()
     channel = serializers.SerializerMethodField()
-    links = serializers.SerializerMethodField()
+    instance = serializers.SerializerMethodField()
+    parent_instance = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
-        fields = ('name', 'uuid', 'parent', 'channel', 'links', 'subcategories' )
+        fields = ('name', 'uuid', 'parent','parent_instance','channel', 'instance', 'subcategories' )
+
 
 
     def get_parent(self, obj):
-        return 'null' if not obj.parent else obj.parent.name
+        return 'null' if not obj.parent else obj.parent.uuid
+
+
+    def get_parent_instance(self, obj):
+        rtrn='null'
+        if obj.parent:
+            request = self.context['request']
+            rtrn = obj.parent.name+' - '+reverse('categ-detail', kwargs={'uuid': obj.parent.uuid}, request=request)
+        return rtrn
+
+
+    def get_parent(self, obj):
+        rtrn='null'
+        if obj.parent:
+            request = self.context['request']
+            rtrn = obj.parent.name+' - '+reverse('categ-detail', kwargs={'uuid': obj.parent.uuid}, request=request)
+        return rtrn
+        # return 'null' if not obj.parent else obj.parent.name
 
     def get_channel(self, obj):
         return obj.channel.name
 
 
-    def get_links(self, obj):
+    def get_instance(self, obj):
         request = self.context['request']
-        return {
-            'self': reverse('category-detail',
-                kwargs={'uuid': obj.uuid}, request=request),
-        }
-
-
+        return reverse('categ-detail', kwargs={'uuid': obj.uuid}, request=request)
 
 
 class ObjChannelSerializer(serializers.ModelSerializer):
     categories = ObjCategorySerializer(many=True)
-    links = serializers.SerializerMethodField()
+    instance = serializers.SerializerMethodField()
 
     class Meta:
         model = Channel
-        fields = ('uuid', 'name', 'links', 'categories')
+        fields = ('uuid', 'name', 'instance', 'categories')
 
-    def get_links(self, obj):
+    def get_instance(self, obj):
         request = self.context['request']
-        return {
-            'self': reverse('channel-detail',
-                kwargs={'name': obj.name}, request=request),
-        }
+        return  reverse('channel-detail', kwargs={'name': obj.name}, request=request)
 
 
 
-##############################################################
-
-
-
+'''
+# Old Version
 class UrlChannelSerializer(serializers.HyperlinkedModelSerializer):
     categories = serializers.HyperlinkedRelatedField(many=True,
                                                      view_name='url-category-detail',
@@ -111,3 +120,4 @@ class UrlCategorySerializer(serializers.HyperlinkedModelSerializer):
         model = Category
         fields = ('uuid', 'name', 'url', 'channel', 'parent' )
 
+'''

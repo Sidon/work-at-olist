@@ -124,7 +124,7 @@ def rsync(_src, _target, _info=None):
 
     if _src is None or _target is None or _src=='staging':
         print ("Valid src: local, l, producao, ou p")
-        print ("Valid target: producao, p, staging ou  s")
+        print ("Valid target: producao, p, staging ou  templates")
         return
 
     if _src in ['producao', 'p'] and _target in ['l', 'local']:
@@ -191,7 +191,7 @@ def rsdeploy(server, comment=None, migrate='n', app='core', info=None):
     _target = __chkserver(server)
     if _target not in ['producao', 'staging']:
         print (_target)
-        print ('parametros para servidor validos: p, s, producao e staging')
+        print ('parametros para servidor validos: p, templates, producao e staging')
         return
     server = _target
 
@@ -214,7 +214,7 @@ def rsdeploy(server, comment=None, migrate='n', app='core', info=None):
 
 
     # Make migrate
-    if migrate=='s':
+    if migrate=='templates':
         migrate(server)
 
 
@@ -337,12 +337,12 @@ def info(_server='local'):
     '''
 
 def __chkserver(_server):
-    if _server not in ['p', 's', 'l', 'producao', 'staging', 'local']:
+    if _server not in ['p', 'templates', 'l', 'producao', 'staging', 'local']:
         return None
 
     if _server=='p':
         _server = 'producao'
-    elif _server=='s':
+    elif _server=='templates':
         _server = 'staging'
     elif _server=='l':
         _server = 'local'

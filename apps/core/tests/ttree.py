@@ -1,6 +1,5 @@
 from django.test import TestCase
 from apps.core.models import Channel, Category
-from .factories import ChannelFactory, CategoryFactory
 
 
 ch = 'Shoptest'
@@ -21,12 +20,7 @@ class ChannelTestCase(TestCase):
     Class to tests the model Channel
     """
 
-
-    # channel = Channel.objects.create(name=ch)
-
-    channel = ChannelFactory(
-        name = ch
-    )
+    channel = Channel.objects.create(name=ch)
 
 
     def test_models1(self):
@@ -59,11 +53,3 @@ class ChannelTestCase(TestCase):
             '''
 
 
-    '''
-    def test_list_nodes(self):
-        nodes =  Category.objects.all()
-        print (nodes)
-
-        for node in nodes:
-            print ('Node ==>',node.name)
-    '''

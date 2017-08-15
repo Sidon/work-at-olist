@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework_tracking',
     'rest_framework.authtoken',
     'apps.core',
+    'rest_framework_docs',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -101,6 +102,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
 
 
 # Internationalization
