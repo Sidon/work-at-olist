@@ -21,4 +21,4 @@ whitenoise==3.3.0
 httpie
 pycrypto==2.6.1  
 django-mptt==0.8.7
-
+drfdocs==0.0.11
