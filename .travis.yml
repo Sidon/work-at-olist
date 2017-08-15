@@ -27,4 +27,5 @@ script:
 - python manage.py migrate --noinput
 
 # Tests
-python manage.py test
+- python manage.py test
+
