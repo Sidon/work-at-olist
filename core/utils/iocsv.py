@@ -3,7 +3,6 @@ import os
 
 from  core.models import Channel, Category
 
-
 def imp_categories(filename, channelname):
     if not os.path.isfile(filename):
         return False
@@ -15,7 +14,6 @@ def imp_categories(filename, channelname):
         Category.objects.filter(channel=channel).delete()
     else:
         channel = Channel.objects.create(name=channelname)
-
 
     # Save 'root' categories on list and nodes on a list of tuples
     categs = {}
@@ -30,7 +28,6 @@ def imp_categories(filename, channelname):
                 nodes.append([row['category'], row['parent']])
                 categs[row['category']] = row['parent']
 
-
     # Check for orphans categories
     orphans = [orphan for orphan in categs if categs[orphan] not in categs.keys()]
 
@@ -41,7 +38,6 @@ def imp_categories(filename, channelname):
     # Save branches on database
     for b in branches:
         Category.objects.create(channel=channel, name=b)
-
 
     # Save nodes on database
     while nodes:
