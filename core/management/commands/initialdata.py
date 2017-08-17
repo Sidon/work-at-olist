@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from  apps.core.models import Channel, Category
 
+from  core import Channel, Category
 
 tree1=(('Books','Books'), ('National Literature', 'Books'), ('Science fiction', 'National Literature'),
        ('Fantastic Fiction', 'National Literature'),('Foreign literature', 'Books'), ('Computers', 'Computers'),

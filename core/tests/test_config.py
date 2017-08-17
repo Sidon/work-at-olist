@@ -1,7 +1,7 @@
 import os
 from django.test import TestCase
+from config.conf import Config
 from workatolist.settings import CONFIG_DIR
-from workatolist.config.conf import Config
 
 
 class ConfigTestCase(TestCase):

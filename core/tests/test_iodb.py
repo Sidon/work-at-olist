@@ -1,6 +1,7 @@
 from django.test import TestCase
-from apps.core.models import Category, Channel
-from apps.core.utils import iocsv
+
+from core.models import Category, Channel
+from core.utils import iocsv
 
 
 class ImportTestCase(TestCase):
@@ -9,7 +10,7 @@ class ImportTestCase(TestCase):
                ('categ211', 'categ21')]
 
     def test_import(self):
-        iocsv.imp_categories('test1.csv','Test1')
+        iocsv.imp_categories('test1.csv', 'Test1')
         channel = Channel.objects.get(name='Test1')
         categories = Category.objects.all().filter(channel=channel)
         categs2 = [(category.name, category.name if not category.parent else category.parent.name) for category in categories]

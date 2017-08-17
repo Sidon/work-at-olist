@@ -1,6 +1,6 @@
 from django.test import TestCase
-from apps.core.models import Channel, Category
 
+from core import Channel, Category
 
 ch = 'Shoptest'
 

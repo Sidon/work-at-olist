@@ -1,12 +1,13 @@
 import os
-from workatolist.config.conf import Config
+
+from config.conf import Config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CONFIG_DIR = os.path.join(PROJECT_ROOT, 'config')
+CONFIG_DIR = os.path.join(PROJECT_ROOT, '../config')
 
 # load encrypted configurations file
 config = Config( os.path.join(CONFIG_DIR, os.environ['FCONFIG'] ))
@@ -29,8 +30,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_tracking',
     'rest_framework.authtoken',
-    'apps.core',
+    'core',
     'rest_framework_docs',
+    'django_coverage',
 ]
 
 MIDDLEWARE_CLASSES = [

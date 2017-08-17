@@ -1,7 +1,8 @@
-import os
-from django.core.management.base import BaseCommand, CommandError
-from  apps.core.models import Channel, Category
 import csv
+
+from django.core.management.base import BaseCommand, CommandError
+
+from  core import Channel, Category
 
 
 class Command(BaseCommand):

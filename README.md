@@ -1,10 +1,11 @@
 # Work at Olist
+A small test used to evaluate if the candidate has the basic skills to work with olist.
 
-# Description
+## Description
 
 This project is a fork of [olist/work-at-olist](https://github.com/olist/work-at-olist).
 
-# TL;DR
+## TL;DR
 [https://work-at-olist-sdn.herokuapp.com/](https://work-at-olist-sdn.herokuapp.com/)
 
 ## Work Environment:
@@ -23,7 +24,7 @@ This project is a fork of [olist/work-at-olist](https://github.com/olist/work-at
 | django-mptt         | Modified pre-order traversal tree in django | 0.8.7 |
 
 ## Original Especifications
-The original especifications can see in the [original project page](https://github.com/olist/work-at-olist) on github
+The original especifications can see in the [original project page](https://github.com/olist/work-at-olist/blob/master/README.md) on github
 
 ## Description for this implementation
 This project implements the original purpose in a way where the API is browseable.

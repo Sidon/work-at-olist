@@ -2,6 +2,6 @@
   "name": "Work at olist",
   "description": "A small test used to evaluate if the candidate has the basic skills to work with olist",
   "repository": "https://github.com/Sidon/work-at-olist",
-  "logo": "https://github.com/Sidon/work-at-olist/logoo.png",
+  "logo": "https://github.com/Sidon/work-at-olist/logo.png",
   "keywords": ["olist", "python", "django"]
 }

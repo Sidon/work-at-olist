@@ -1,6 +1,7 @@
-import os
 import csv
-from  apps.core.models import Channel, Category
+import os
+
+from  core.models import Channel, Category
 
 
 def imp_categories(filename, channelname):

@@ -1,7 +1,9 @@
 import os
+
 from django.core.management.base import BaseCommand, CommandError
+
+from core import imp_categories
 from workatolist.settings import BASE_DIR
-from apps.core.utils.iocsv import imp_categories
 
 
 class Command(BaseCommand):
