@@ -17,7 +17,7 @@ This project is a fork of [olist/work-at-olist](https://github.com/olist/work-at
 | Editor/IDE        | Pycharm                   | 2017.1.1   |
 | venv              | Conda (Miniconda)         | 4.3.14
 | Programming language | Python                 |    3.61    |
-| CI                | CircleCI and Travis       | 2017-08    |
+| CI                | CircleCI                  | 2017-08    |
 | Coverage          | Codecov                   |            |
 | Django            | Main framework            | 1.11.2     |
 | djangorestframework | Framework for api       | 3.6.3      |

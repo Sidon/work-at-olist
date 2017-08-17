@@ -1,5 +1,4 @@
 from django.test import TestCase
-
 from core.models import Category, Channel
 from core.utils import iocsv
 
