@@ -1,0 +1,56 @@
+python_version: 3.6
+project: work-at-olist
+cvs_repo: https://github.com/Sidon/work-at-olist.git
+conda_env: olist python=3.6
+database: olist
+_local_repo: os.path.abspath(os.path.dirname(__file__))
+dir_apps: /apps/
+migrate_file: models.py
+ssh_conf: /home/sidon/.ssh/config
+
+
+servers:
+  local:
+    home: /home/sidon
+    env_activate: 'source /home/sidon/anaconda3/envs/olist/bin/activate olist'
+    repo_project: criado dinamicamente com eval(_local_root)
+    dir_project: criado dinamicamente a partir de repo_project
+    root_staging: /mnt/admins/webapps
+    db_name: olist
+    backup_dir: Criado dinamicamente via __local_repo/backup
+
+
+  staging:
+    home: /home/admins
+    root: /home/admins/webapps
+    repo_project: /home/admins/webapps/work-at-olist
+    dir_project: /home/admins/webapps/work-at-list/work-at-list/
+    dir_apps: /home/admins/webapps/work-at-list/work-at-list/apps
+    env_activate: 'source /opt/anaconda/envs/olist/bin/activate olist'
+    backup_dir: /home/admins/webapps/backup
+    db_name: olist
+
+
+  #TODO Substituir, pelos procedimentos para o Heroku
+  producao:
+    home: /home/sidon
+    root: /home/sidon/webapps
+    repo_project: /home/sidon/webapps/autopart
+    dir_project: /home/sidon/webapps/autopart/autopart
+    dir_apps: /home/sidon/webapps/autopart/apps/
+    env_activate: 'source /home/sidon/opt/miniconda3/envs/autopart/bin/activate autopart'
+    backup_dir: /home/sidon/webapps/backup
+    db_name: autopart
+
+
+rsync_exclude: !!python/tuple ['.DS_Store', '.hg', '.git', '*.pyc', '*.example', '*.db', 'media/admin', 'fab.yaml',
+                               'media/attachments', 'local_settings.py', 'fabfile*.py', 'bootstrap.py', '.idea',
+                               '.gitignore']
+
+
+
+
+
+
+
+

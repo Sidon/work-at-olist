@@ -1,0 +1,1 @@
+{"secretk": "w6**ci+meh=n)o_2ee5qga7ubb&pb30=iyx^5$+v-_iv+u)!nw","debug": "on","ahosts": "localhost,127.0.0.1,work-at-olist-sdn.herokuapp.com","add_apps": ["django_extensions"],"db": {"default": {"ENGINE": "django.db.backends.sqlite3","NAME": "db.sqlite3"}}}

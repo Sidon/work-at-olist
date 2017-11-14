@@ -1,0 +1,13 @@
+category,parent
+categ0,Null
+categ1,Null
+categ2,Null
+categ01,categ0
+categ11,categ1
+categ21,categ2
+categ011,categ01
+categ111,categ11
+categ211,categ21
+
+
+

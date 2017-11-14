@@ -1,0 +1,17 @@
+{
+  "secretk": "w6**ci+meh34=n)o_299ee5qga7ubb&pb30=iyx^5$+v-_iv+u)!nw",
+  "debug": "on",
+  "ahosts": "localhost,127.0.0.1",
+  "add_apps": ["django_extensions"],
+
+   "db": {
+     "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "dbtest",
+        "USER": "dbtest",
+        "PASSWORD": "password_99",
+        "HOST": "localhost",
+        "PORT": "5432"
+     }
+   }
+}
