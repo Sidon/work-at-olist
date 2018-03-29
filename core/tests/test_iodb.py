@@ -9,7 +9,11 @@ class ImportTestCase(TestCase):
                ('categ211', 'categ21')]
 
     def test_import(self):
+<<<<<<< HEAD
         iocsv.imp_csv('test1.csv', 'Test1')
+=======
+        iocsv.imp_categories('test1.csv', 'Test1')
+>>>>>>> be5387868eaacd7d80e81b4445329224886be463
         channel = Channel.objects.get(name='Test1')
         categories = Category.objects.all().filter(channel=channel)
         categs2 = [(category.name, category.name if not category.parent else category.parent.name) for category in categories]

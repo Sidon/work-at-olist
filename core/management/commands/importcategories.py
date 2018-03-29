@@ -7,6 +7,9 @@ from workatolist.settings import BASE_DIR
 
 
 class Command(BaseCommand):
+    '''
+    Create initial data
+    '''
     help = 'read_csv and populate database'
     def add_arguments(self, parser):
         # Positional arguments

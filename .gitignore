@@ -7,3 +7,13 @@
 *.log
 .env
 tmp
+<<<<<<< HEAD
+=======
+.FCONFIG
+.MASTERKEY
+.config*
+*.csv
+..travis.yml.kate-swp
+.config-local.json
+.config-heroku.yaml
+>>>>>>> be5387868eaacd7d80e81b4445329224886be463

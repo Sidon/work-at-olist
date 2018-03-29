@@ -1,0 +1,52 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+
+  <!-- Add additional CSS in static file -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+      <div class="box header">
+          <h1>Tikal Tech Challenge</h1>
+      </div>
+
+        <nav class="sidebar">
+          <!-- Navigation -->
+          <ul>
+            <li class="active"><a class="lex" href="index.html ">Listagem</a></li>
+            <li><a href="./cadastro.html">Cadastro</a></li>
+            <li><a href="{% url 'admin:index' %}">Admin</a></li>
+            <!-- Infelizmente drf ainda não tem namespace para uma router viewset -->
+            <li><a href="https://tikal-challenge.herokuapp.com/api/">API</a></li>
+          </ul>
+        </nav>
+
+
+        <div class="box content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <div class="box footer">
+        <p>
+            By Sidon 2018
+        </p>
+    </div>
+
+</body>
+</html>

@@ -50,6 +50,7 @@ def imp_tree(filename, channelname):
 
     # Save to database
     for branche in tree:
+        pass
 
 
     '''

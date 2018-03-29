@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_tracking',
     'rest_framework.authtoken',
+    'markdownx',
     'core',
     'rest_framework_docs',
     'django_filters',
@@ -138,3 +139,6 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
+MARKDOWNX_MARKDOWN_EXTENSIONS = [
+    'markdown.extensions.tables'
+]

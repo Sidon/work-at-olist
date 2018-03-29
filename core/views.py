@@ -2,10 +2,30 @@ from django.core.exceptions import ValidationError
 
 # DRF
 from rest_framework import viewsets
+from django.views.generic import TemplateView
 from rest_framework import authentication, permissions, viewsets, filters, pagination
+from markdownx.utils import markdownify
 from .models import Channel, Category
 from .serializers import ChannelSerializer, CategorySerializer
 from .forms import ChannelFilter, CategoryFilter
+
+
+class HomeView(TemplateView):
+
+    template_name = 'core/home.html'
+    context_object_name = 'markdown'
+
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+
+        with open('README.md', 'r') as f:
+            data = f.read()
+        context['markdwon'] = markdownify(data)
+
+        print ("====>",context)
+
+
+        return context
 
 class DefaultsMixin(object):
     """Default settings for view authentication, permissions, filtering
